@@ -6,10 +6,14 @@ import java.util.Set;
 
 public class SleepDemo implements Runnable {
 
+	// To detect word1 running status
+	private static boolean status = false;
+	
 	/**
 	 * This method will reorder the sentence in random order
 	 */
 	public void randomOrderText() {
+	
 		String arr[] = { "It", "is", "recommended", "to", "use", "Calendar", "class" };
 		Random randNum = new Random();
 		// set is used to avoid duplicate data
@@ -24,15 +28,17 @@ public class SleepDemo implements Runnable {
 
 		String reorderText = "";
 		for (int i = 0; i < arr.length; i++) {
+			status = true;
 			reorderText += arr[(int) textOrderArr[i]] + " ";
-		}
-		System.out.println(reorderText);
+			System.out.println(reorderText);
+			
+		}		
+		
 
 	}
 
 	public void randomOrderText(String threadName) {
-		try {
-			
+		
 			String arr[] = { "It", "is", "recommended", "to", "use", "Calendar", "class" };
 			Random randNum = new Random();
 			// set is used to avoid duplicate data
@@ -48,18 +54,22 @@ public class SleepDemo implements Runnable {
 			String reorderText = "";
 			for (int i = 0; i < arr.length; i++) {
 				reorderText += arr[(int) textOrderArr[i]] + " ";
+				try {	
+					if (status == true) {
+						// suspend current thread for 5 seconds
+						System.out.println("\n\n"+ threadName + " is sleeping\n\n");
+						Thread.sleep(5000);
+						status = false;
+					}
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+				System.out.println(threadName + " : " + reorderText);
 			}
-			//Thread.sleep(5000);
-			System.out.println(threadName + " : " + reorderText);
-
-			// suspend current thread for 5 seconds
-			Thread.sleep(5000);
-			System.out.print(threadName + " is sleeping.");
-
-		} catch (InterruptedException e) {
-
-			e.printStackTrace();
-		}
+			
+		
 
 	}
 
